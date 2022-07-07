@@ -6,6 +6,13 @@ void main() {
   runApp(const App());
 }
 
+class BouncingScrollBehavior extends ScrollBehavior {
+  @override
+  ScrollPhysics getScrollPhysics(BuildContext context) {
+    return const BouncingScrollPhysics();
+  }
+}
+
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
 
@@ -15,6 +22,12 @@ class App extends StatelessWidget {
       title: 'Flutter Demo',
       theme: _theme,
       home: const OnboardingPage(),
+      builder: (context, child) {
+        return ScrollConfiguration(
+          behavior: BouncingScrollBehavior(),
+          child: child!,
+        );
+      },
     );
   }
 

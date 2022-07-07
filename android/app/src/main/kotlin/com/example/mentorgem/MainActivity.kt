@@ -1,4 +1,4 @@
-package com.example.mentorgem
+package com.rasitayaz.mentorgem
 
 import io.flutter.embedding.android.FlutterActivity
 
