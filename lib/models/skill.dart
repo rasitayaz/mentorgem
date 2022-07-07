@@ -7,10 +7,12 @@ class Skill {
   final String title;
   final int level;
 
-  String get levelTitle {
+  String get levelTitle => getLevelTitle(level);
+
+  static String getLevelTitle(int level) {
     switch (level) {
       case 1:
-        return 'Beginner';
+        return 'Novice';
       case 2:
         return 'Advanced';
       case 3:
