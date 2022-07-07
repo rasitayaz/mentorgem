@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:mentorgem/pages/sign_up_page.dart';
 import 'package:mentorgem/views/balanced_text.dart';
 
 class OnboardingPage extends StatefulWidget {
@@ -204,23 +205,20 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  ElevatedButton(
-                    onPressed: () {},
+                  ElevatedButton.icon(
+                    onPressed: _navigateToSignUp,
                     style: ElevatedButton.styleFrom(
                       primary: const Color(0xFF007AFF),
                     ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: const [
-                        FaIcon(FontAwesomeIcons.linkedin),
-                        SizedBox(width: 12),
-                        Text('Get started with LinkedIn'),
-                      ],
+                    icon: const Padding(
+                      padding: EdgeInsets.only(right: 4),
+                      child: FaIcon(FontAwesomeIcons.linkedin),
                     ),
+                    label: const Text('Get started with LinkedIn'),
                   ),
                   const SizedBox(height: 20),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: _navigateToSignUp,
                     child: const Text('Continue as a guest'),
                   ),
                 ],
@@ -258,6 +256,13 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 ],
               ),
       ),
+    );
+  }
+
+  void _navigateToSignUp() {
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (context) => const SignUpPage()),
+      (route) => false,
     );
   }
 }

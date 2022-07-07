@@ -19,19 +19,46 @@ class App extends StatelessWidget {
   }
 
   ThemeData get _theme {
+    InputBorder inputBorder = OutlineInputBorder(
+      borderSide: const BorderSide(
+        color: Color(0xFFE1E5F2),
+      ),
+      borderRadius: BorderRadius.circular(8),
+    );
+
     return ThemeData(
       colorScheme: const ColorScheme.light(
         primary: Color(0xFF5856D6),
       ),
       textTheme: TextTheme(
+        subtitle2: GoogleFonts.poppins(
+          fontSize: 14,
+          fontWeight: FontWeight.w400,
+          color: const Color(0xFFC3C3C3),
+        ),
+        bodyText1: GoogleFonts.poppins(
+          fontSize: 14,
+          fontWeight: FontWeight.w400,
+          color: const Color(0xFF1F2433),
+        ),
         bodyText2: GoogleFonts.poppins(
           fontSize: 14,
           fontWeight: FontWeight.w400,
           color: const Color(0xFF5C5C5C),
         ),
+        headline1: GoogleFonts.poppins(
+          fontSize: 24,
+          fontWeight: FontWeight.w700,
+          color: const Color(0xFF1F2433),
+        ),
         headline2: GoogleFonts.poppins(
           fontSize: 20,
           fontWeight: FontWeight.w700,
+          color: const Color(0xFF1F2433),
+        ),
+        headline3: GoogleFonts.poppins(
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
           color: const Color(0xFF1F2433),
         ),
         button: GoogleFonts.poppins(
@@ -56,6 +83,12 @@ class App extends StatelessWidget {
           ),
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
         ),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        hintStyle: GoogleFonts.poppins(color: const Color(0xFFC3C3C3)),
+        contentPadding: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+        border: inputBorder,
+        enabledBorder: inputBorder,
       ),
     );
   }
