@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mentorgem/views/balanced_text.dart';
 
@@ -53,9 +54,16 @@ class _OnboardingPageState extends State<OnboardingPage> {
                         'Joining MentorGem is easy. Join with Linkedin for the most optimal experience. Other login options are available.',
                     artwork: Stack(
                       children: [
-                        Image.asset(
-                          'assets/images/onboarding-1.png',
-                          fit: BoxFit.cover,
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: SvgPicture.asset(
+                            'assets/images/background-1.svg',
+                          ),
+                        ),
+                        Center(
+                          child: Image.asset(
+                            'assets/images/onboarding-1.png',
+                          ),
                         ),
                       ],
                     ),
@@ -64,13 +72,45 @@ class _OnboardingPageState extends State<OnboardingPage> {
                     title: 'Find your mentor quickly.',
                     description:
                         'Our smart match technology will match you with a mentor best fit to help you achieve your goals.',
-                    artwork: Stack(),
+                    artwork: Stack(
+                      children: [
+                        Positioned.fill(
+                          child: Transform.scale(
+                            scaleY: 0.984,
+                            child: SvgPicture.asset(
+                              'assets/images/background-2.svg',
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                        ),
+                        Center(
+                          child: SvgPicture.asset(
+                            'assets/images/onboarding-2.svg',
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   _buildOnboardingStep(
                     title: 'Connect together and talk.',
                     description:
                         'Choose the mentor that you like and start interacting immediately. Enjoy the journey!',
-                    artwork: Stack(),
+                    artwork: Stack(
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: SvgPicture.asset(
+                            'assets/images/background-3.svg',
+                            fit: BoxFit.fitWidth,
+                          ),
+                        ),
+                        Center(
+                          child: SvgPicture.asset(
+                            'assets/images/onboarding-3.svg',
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
