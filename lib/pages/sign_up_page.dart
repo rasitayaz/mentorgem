@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mentorgem/models/language.dart';
+import 'package:mentorgem/models/skill.dart';
 import 'package:mentorgem/pages/onboarding_page.dart';
+import 'package:mentorgem/views/add_language_dialog.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -12,6 +15,8 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  final List<Language> _languages = [];
+  final List<Skill> _skills = [];
   String _linkedInUrl = '';
 
   @override
@@ -35,7 +40,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 const SizedBox(height: 4),
                 TextField(
                   decoration: const InputDecoration(
-                    hintText: 'Enter your LinkedIn profile',
+                    hintText: 'Enter your LinkedIn profile URL',
                   ),
                   autofillHints: const [AutofillHints.url],
                   keyboardType: TextInputType.url,
@@ -51,11 +56,12 @@ class _SignUpPageState extends State<SignUpPage> {
                   },
                   behavior: HitTestBehavior.opaque,
                   child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       FaIcon(
                         FontAwesomeIcons.circleExclamation,
                         color: Theme.of(context).colorScheme.primary,
-                        size: 16,
+                        size: 20,
                       ),
                       const SizedBox(width: 8),
                       Text(
@@ -71,16 +77,29 @@ class _SignUpPageState extends State<SignUpPage> {
                 const SizedBox(height: 16),
                 _buildChipList(
                   title: 'Skills',
+                  type: 'Skill',
                   subtitle: '(Ex: Java, business strategy)',
-                  items: [],
+                  items: _skills,
+                  onAdd: () {},
                 ),
                 const SizedBox(height: 16),
                 _buildChipList(
                   title: 'Languages',
+                  type: 'Language',
                   subtitle: '(Optional)',
-                  items: [],
+                  items: _languages,
+                  onAdd: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => AddLanguageDialog(
+                        onAdd: (language) {
+                          setState(() => _languages.add(language));
+                        },
+                      ),
+                    );
+                  },
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 32),
                 ElevatedButton(
                   onPressed: _navigateToOnboarding,
                   child: const Text('Get Started'),
@@ -127,8 +146,10 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Widget _buildChipList<T>({
     required String title,
+    required String type,
     String? subtitle,
     required List<T> items,
+    required void Function() onAdd,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -137,7 +158,7 @@ class _SignUpPageState extends State<SignUpPage> {
           text: TextSpan(
             children: [
               TextSpan(
-                text: 'Skills',
+                text: title,
                 style: Theme.of(context).textTheme.headline3,
               ),
               if (subtitle != null)
@@ -152,11 +173,45 @@ class _SignUpPageState extends State<SignUpPage> {
         Wrap(
           spacing: 8,
           runSpacing: 8,
-          children: items.map((item) {
-            return Chip(
-              label: Text(item.toString()),
+          children: items.map<Widget>((item) {
+            return InputChip(
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              label: Text(
+                item.toString(),
+                style: GoogleFonts.poppins(
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                ),
+              ),
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              deleteIcon: FaIcon(
+                FontAwesomeIcons.solidCircleXmark,
+                color: Theme.of(context).scaffoldBackgroundColor,
+                size: 20,
+              ),
+              onDeleted: () {
+                setState(() => items.remove(item));
+              },
             );
-          }).toList(),
+          }).toList()
+            ..add(
+              ActionChip(
+                elevation: 2,
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                avatar: FaIcon(
+                  FontAwesomeIcons.circlePlus,
+                  color: Theme.of(context).colorScheme.primary,
+                  size: 20,
+                ),
+                label: Text(
+                  items.isEmpty ? 'First $type' : type,
+                  style: GoogleFonts.poppins(
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                ),
+                onPressed: onAdd,
+              ),
+            ),
         ),
       ],
     );
