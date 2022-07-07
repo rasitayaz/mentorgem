@@ -5,6 +5,7 @@ import 'package:mentorgem/models/language.dart';
 import 'package:mentorgem/models/skill.dart';
 import 'package:mentorgem/pages/onboarding_page.dart';
 import 'package:mentorgem/views/add_language_dialog.dart';
+import 'package:mentorgem/views/add_skill_dialog.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -25,9 +26,9 @@ class _SignUpPageState extends State<SignUpPage> {
       body: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         behavior: HitTestBehavior.opaque,
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(24),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(24),
+          child: SafeArea(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -49,6 +50,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 const SizedBox(height: 4),
                 GestureDetector(
                   onTap: () {
+                    if (_linkedInUrl.isEmpty) return;
                     String url = _linkedInUrl.contains('https://')
                         ? _linkedInUrl
                         : 'https://$_linkedInUrl';
@@ -80,7 +82,16 @@ class _SignUpPageState extends State<SignUpPage> {
                   type: 'Skill',
                   subtitle: '(Ex: Java, business strategy)',
                   items: _skills,
-                  onAdd: () {},
+                  onClickAdd: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => AddSkillDialog(
+                        onAdd: (skill) {
+                          setState(() => _skills.add(skill));
+                        },
+                      ),
+                    );
+                  },
                 ),
                 const SizedBox(height: 16),
                 _buildChipList(
@@ -88,7 +99,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   type: 'Language',
                   subtitle: '(Optional)',
                   items: _languages,
-                  onAdd: () {
+                  onClickAdd: () {
                     showDialog(
                       context: context,
                       builder: (context) => AddLanguageDialog(
@@ -149,7 +160,7 @@ class _SignUpPageState extends State<SignUpPage> {
     required String type,
     String? subtitle,
     required List<T> items,
-    required void Function() onAdd,
+    required void Function() onClickAdd,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -209,7 +220,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     color: Theme.of(context).colorScheme.primary,
                   ),
                 ),
-                onPressed: onAdd,
+                onPressed: onClickAdd,
               ),
             ),
         ),
