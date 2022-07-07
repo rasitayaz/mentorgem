@@ -52,64 +52,45 @@ class _OnboardingPageState extends State<OnboardingPage> {
                     title: 'Join MentorGem with one click.',
                     description:
                         'Joining MentorGem is easy. Join with Linkedin for the most optimal experience. Other login options are available.',
-                    artwork: Stack(
-                      children: [
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: SvgPicture.asset(
-                            'assets/images/background-1.svg',
-                          ),
-                        ),
-                        Center(
-                          child: Image.asset(
-                            'assets/images/onboarding-1.png',
-                          ),
-                        ),
-                      ],
+                    background: Padding(
+                      padding: const EdgeInsets.only(left: 32, top: 16),
+                      child: SvgPicture.asset(
+                        'assets/images/background-1.svg',
+                        fit: BoxFit.fill,
+                      ),
                     ),
+                    artwork: Image.asset('assets/images/onboarding-1.png'),
                   ),
                   _buildOnboardingStep(
                     title: 'Find your mentor quickly.',
                     description:
                         'Our smart match technology will match you with a mentor best fit to help you achieve your goals.',
-                    artwork: Stack(
-                      children: [
-                        Positioned.fill(
-                          child: Transform.scale(
-                            scaleY: 0.984,
-                            child: SvgPicture.asset(
-                              'assets/images/background-2.svg',
-                              fit: BoxFit.fill,
-                            ),
-                          ),
-                        ),
-                        Center(
-                          child: SvgPicture.asset(
-                            'assets/images/onboarding-2.svg',
-                          ),
-                        ),
-                      ],
+                    background: Padding(
+                      padding: const EdgeInsets.only(top: 16),
+                      child: SvgPicture.asset(
+                        'assets/images/background-2.svg',
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                    artwork: Image.asset(
+                      'assets/images/onboarding-2.png',
+                      width: MediaQuery.of(context).size.width * 3 / 4,
                     ),
                   ),
                   _buildOnboardingStep(
                     title: 'Connect together and talk.',
                     description:
                         'Choose the mentor that you like and start interacting immediately. Enjoy the journey!',
-                    artwork: Stack(
-                      children: [
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: SvgPicture.asset(
-                            'assets/images/background-3.svg',
-                            fit: BoxFit.fitWidth,
-                          ),
-                        ),
-                        Center(
-                          child: SvgPicture.asset(
-                            'assets/images/onboarding-3.svg',
-                          ),
-                        ),
-                      ],
+                    background: Padding(
+                      padding: const EdgeInsets.only(right: 72, top: 16),
+                      child: SvgPicture.asset(
+                        'assets/images/background-3.svg',
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                    artwork: Image.asset(
+                      'assets/images/onboarding-3.png',
+                      width: MediaQuery.of(context).size.width * 4 / 5,
                     ),
                   ),
                 ],
@@ -128,7 +109,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
   Widget _buildStepIndicator() {
     return Column(
       children: [
-        const Spacer(flex: 2),
+        const Spacer(flex: 3),
         SizedBox(
           height: _indicatorHeight,
           child: Row(
@@ -150,8 +131,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
             }),
           ),
         ),
-        const Spacer(flex: 1),
-        const SizedBox(height: 96),
+        const Spacer(flex: 2),
+        const SizedBox(height: 64),
       ],
     );
   }
@@ -159,17 +140,28 @@ class _OnboardingPageState extends State<OnboardingPage> {
   Widget _buildOnboardingStep({
     required String title,
     required String description,
+    required Widget background,
     required Widget artwork,
   }) {
     return Column(
       children: [
         Expanded(
-          flex: 2,
-          child: artwork,
+          flex: 3,
+          child: Stack(
+            children: [
+              Positioned.fill(child: background),
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: artwork,
+                ),
+              ),
+            ],
+          ),
         ),
         const SizedBox(height: _indicatorHeight),
         Expanded(
-          flex: 1,
+          flex: 2,
           child: Padding(
             padding: const EdgeInsets.all(36),
             child: Column(
@@ -188,7 +180,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
             ),
           ),
         ),
-        const SizedBox(height: 96),
+        const SizedBox(height: 64),
       ],
     );
   }
