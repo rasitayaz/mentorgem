@@ -1,9 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mentorgem/pages/onboarding_page.dart';
+import 'package:mentorgem/ui/pages/onboarding_page.dart';
 
 void main() {
-  runApp(const App());
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge).then(
+    (_) {
+      SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+        systemNavigationBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.dark,
+        statusBarColor: Colors.transparent,
+      ));
+      debugRepaintRainbowEnabled = true;
+      runApp(const ProviderScope(child: App()));
+    },
+  );
 }
 
 class BouncingScrollBehavior extends ScrollBehavior {

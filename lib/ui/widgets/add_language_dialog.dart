@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mentorgem/models/language.dart';
-import 'package:mentorgem/views/balanced_text.dart';
+import 'package:mentorgem/core/models/language_model.dart';
+import 'package:mentorgem/core/riverpod/language_list_provider.dart';
+import 'package:mentorgem/ui/widgets/balanced_text.dart';
 
-class AddLanguageDialog extends StatefulWidget {
-  const AddLanguageDialog({
-    Key? key,
-    required this.onAdd,
-  }) : super(key: key);
-
-  final Function(Language language) onAdd;
+class AddLanguageDialog extends ConsumerStatefulWidget {
+  const AddLanguageDialog({super.key});
 
   @override
-  State<AddLanguageDialog> createState() => _AddLanguageDialogState();
+  ConsumerState<AddLanguageDialog> createState() => _AddLanguageDialogState();
 }
 
-class _AddLanguageDialogState extends State<AddLanguageDialog> {
+class _AddLanguageDialogState extends ConsumerState<AddLanguageDialog> {
   final _inputController = TextEditingController();
   bool _hasError = false;
   String? _message;
+
+  Color get _messageColor =>
+      _hasError ? Colors.red : Theme.of(context).colorScheme.primary;
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +59,28 @@ class _AddLanguageDialogState extends State<AddLanguageDialog> {
                 },
               ),
               const SizedBox(height: 12),
-              if (_message != null) _buildMessage(),
+              if (_message != null)
+                Row(
+                  children: [
+                    FaIcon(
+                      _hasError
+                          ? FontAwesomeIcons.circleExclamation
+                          : FontAwesomeIcons.solidCircleCheck,
+                      color: _messageColor,
+                      size: 16,
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: BalancedText(
+                        _message,
+                        style: GoogleFonts.poppins(
+                          color: _messageColor,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               const SizedBox(height: 12),
               ElevatedButton(
                 onPressed: () {
@@ -69,7 +90,9 @@ class _AddLanguageDialogState extends State<AddLanguageDialog> {
                       _message = 'Please enter a language';
                     });
                   } else {
-                    widget.onAdd(Language(_inputController.text));
+                    ref
+                        .read(languageListProvider.notifier)
+                        .add(Language(_inputController.text));
                     _inputController.clear();
                     setState(() {
                       _hasError = false;
@@ -84,32 +107,6 @@ class _AddLanguageDialogState extends State<AddLanguageDialog> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildMessage() {
-    Color color =
-        _hasError ? Colors.red : Theme.of(context).colorScheme.primary;
-    return Row(
-      children: [
-        FaIcon(
-          _hasError
-              ? FontAwesomeIcons.circleExclamation
-              : FontAwesomeIcons.solidCircleCheck,
-          color: color,
-          size: 16,
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: BalancedText(
-            _message,
-            style: GoogleFonts.poppins(
-              color: color,
-              fontSize: 12,
-            ),
-          ),
-        ),
-      ],
     );
   }
 }
